@@ -1,0 +1,224 @@
+/* Importando uma fonte clássica de Pixel Art */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+.tela-entrada {
+    position: absolute; /* Fixa na tela */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Fundo preto meio transparente */
+    color: white;
+    display: flex;
+    justify-content: center; /* Centraliza o texto */
+    align-items: center;
+    z-index: 1000; /* Garante que fique por cima de tudo no jogo */
+    cursor: pointer; /* Muda o mouse para a mãozinha de clique */
+    font-family: "Press Start 2P", cursive; /* Usando a mesma fonte do seu jogo! */
+}
+
+.btn-controle-som {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border: 4px solid #fff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    cursor: pointer;
+    z-index: 100; /* Para ficar na frente do jogo */
+}
+
+.btn-controle-som:hover {
+    background-color: #555;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Aplicando a fonte de fliperama em TUDO */
+    font-family: 'Press Start 2P', cursive; 
+}
+
+body {
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
+    overflow: hidden; /* Remove barras de rolagem que possam aparecer */
+}
+
+#game-container {
+    position: relative;
+    width: 100vw; 
+    height: 100vh; 
+    background-color: #4eb3e7; 
+    background-image: url('./img/fundo.avif'); 
+    background-size: cover;
+    background-position: center;
+}
+
+canvas {
+    display: block; 
+    width: 100%;
+    height: 100%;
+    /* 👇 SEGREDINHO PROFISSIONAL: Impede que a pixel-art fique embaçada quando estica a tela! */
+    image-rendering: pixelated; 
+}
+
+/* Telas de Interface */
+#menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    overflow: hidden;
+}
+
+#end-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); /* Fundo mais escuro quando morre */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    flex-direction: column;
+}
+
+#video-fundo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    z-index: -1; 
+}
+
+/* PAINEL ESTILO FLIPERAMA/ARCADE */
+.panel {
+    background-color: #111; 
+    padding: 40px 50px;
+    text-align: center;
+    /* Borda sólida simulando pixels */
+    border: 4px solid #fff;
+    /* Sombra dura para dar profundidade + linha interna verde */
+    box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.8), inset 0 0 0 4px #4ade80;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    min-width: 500px;
+}
+
+h1 {
+    font-size: 40px; 
+    color: #4ade80; /* Verde néon */
+    /* Sombra dura, sem desfoque, igual jogos antigos */
+    text-shadow: 4px 4px 0px #065f46; 
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+h2 {
+    font-size: 24px;
+    color: #facc15;
+    text-shadow: 4px 4px 0px #854d0e;
+    margin-bottom: 20px;
+}
+
+.info-text {
+    font-size: 12px; /* Fonte pixelada é bem grande, 12px já é perfeito */
+    line-height: 2;
+    text-align: left;
+    color: #e2e8f0;
+}
+
+.info-text a {
+    color: #facc15;
+    text-decoration: none;
+}
+
+.info-text a:hover {
+    color: #fff;
+}
+
+.social-links {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* BOTÕES PIXEL ART SENSACIONAIS */
+.btn {
+    background-color: #2563eb;
+    color: white;
+    border: 4px solid #fff;
+    padding: 20px; 
+    font-size: 16px;
+    cursor: pointer;
+    text-transform: uppercase;
+    /* Sombra deslocada simulando o botão saindo da tela */
+    box-shadow: 6px 6px 0px #000;
+    /* Transição rápida e seca */
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.btn:hover {
+    background-color: #3b82f6;
+    color: #facc15;
+    /* EFEITO DE CLIQUE: Empurra o botão pra baixo e tira a sombra */
+    transform: translate(6px, 6px);
+    box-shadow: 0px 0px 0px #000;
+}
+
+/* Botões menores de voltar/créditos */
+.btn-small {
+    background-color: #b91c1c; /* Vermelho para os secundários */
+    font-size: 12px;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.btn-small:hover {
+    background-color: #ef4444;
+}
+
+.link-btn {
+    background-color: #1e293b;
+    color: white;
+    padding: 12px 20px;
+    border: 2px solid #fff;
+    text-decoration: none;
+    font-size: 10px;
+}
+
+.link-btn:hover {
+    background-color: #facc15;
+    color: #000;
+}
+
+/* Textos da tela de game over */
+#end-score {
+    font-size: 16px;
+    margin-bottom: 25px;
+    color: #fff;
+}

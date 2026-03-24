@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Air Battle - Santiago Fidmay</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="tela-entrada" class="tela-entrada">
+        <h1>CLIQUE NA TELA PARA COMEÇAR</h1>
+    </div>
+
+    <div id="game-container">
+        
+        <div id="menu">
+            <video autoplay muted loop id="video-fundo">
+                <source src="./img/gif_Fundo.mp4" type="video/mp4">
+            </video>
+
+            <div id="main-panel" class="panel">
+                <h1>AIR BATTLE</h1>
+                <button id="btn-jogar" class="btn">JOGAR</button>
+                <button id="btn-como-jogar" class="btn">COMO JOGAR</button>
+                <button id="btn-creditos" class="btn">CRÉDITOS</button>
+            </div>
+
+            <div id="how-to-play-panel" class="panel hidden">
+                <h2>COMO JOGAR</h2>
+                <div class="info-text">
+                    <p><strong>W / S:</strong> Move o avião para cima e para baixo.</p>
+                    <p><strong>Espaço / Clique:</strong> Dispara contra os inimigos.</p>
+                    <p>Fique de olho nos itens! Colete os <strong>power-ups</strong> que caem para ganhar escudos de proteção, mais velocidade ou tiros duplos!</p>
+                </div>
+                <button id="btn-voltar-howto" class="btn btn-small">VOLTAR</button>
+            </div>
+
+            <div id="credits-panel" class="panel hidden">
+                <h2>CRÉDITOS</h2>
+                <div class="info-text">
+                    <p>Desenvolvido por: <strong>Santiago Fidmay</strong></p>
+                    <p>Email: <a href="mailto:santiagofidmay@gmail.com">santiagofidmay@gmail.com</a></p>
+                    <div class="social-links">
+                        <a href="https://github.com/SantiagoFidmay" target="_blank" class="link-btn">GitHub</a>
+                        <a href="https://www.instagram.com/santiagofidmay" target="_blank" class="link-btn">Instagram</a>
+                    </div>
+                </div>
+                <button id="btn-voltar-credits" class="btn btn-small">VOLTAR</button>
+            </div>
+        </div>
+
+        <div id="end-screen" class="hidden">
+            <h1 id="end-title">GAME OVER</h1>
+            <p id="end-score">Pontuação: 0</p>
+            <button id="btn-reiniciar" class="btn">JOGAR NOVAMENTE</button>
+            <button id="btn-voltar-menu" class="btn">VOLTAR AO MENU</button>
+        </div>
+
+        <canvas id="des" width="1600" height="900"></canvas>
+        <button id="botao-som" class="btn-controle-som">🔊 Som: ON</button>
+    </div>
+    <script src="models/Aviao.js"defer></script>
+    <script src="index.js" defer></script>
+
+</body>
+</html>
