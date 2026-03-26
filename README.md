@@ -82,7 +82,7 @@ Esta seção contém os dados dos responsáveis pelo desenvolvimento e orientaç
 | **Desenvolvedor** | Santiago Fidmay | [santiagofidmay@gmail.com](mailto:santiagofidmay@gmail.com) |
 | | | [GitHub](https://github.com/SantiagoFidmay) |
 | | | [Instagram](https://www.instagram.com/santiagofidmay) |
-| **Product Owner** | [Nome do Professor] | [Contato do Professor] |
+| **Product Owner** | Carlos Roberto Da Silva Filho | silva@edu.sc.senai.br |
 
 ---
 
