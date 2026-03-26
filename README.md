@@ -1,4 +1,4 @@
-# Air Battle 2D
+# Air Battle
 
 ### Desenvolvimento por: Santiago Fidmay
 
@@ -6,13 +6,13 @@
 
 ## 1. Identificação do Projeto
 
-* **Título do Projeto:** Air Battle 2D
+* **Título do Projeto:** Air Battle
 * **Identificação do Desenvolvedor:** Santiago Fidmay
 * **Logotipo/Banner:**
     <p align="center">
       <img src="./img/favicon_jogo.png" alt="Air Battle Logo" width="200"/>
     </p>
-    *(Banner oficial do jogo)*
+    *(Banner oficial do jogo Air Battle)*
 
 ---
 
@@ -69,7 +69,7 @@ O jogo possui um sistema de progressão visual do avião do jogador baseado na p
 * **Vidas:** O jogador (ou cada jogador no modo 2P) começa com 5 vidas. Colisões ou tiros inimigos removem 1 vida. O jogo acaba quando todas as vidas chegam a zero.
 * **Pontuação:** Cada inimigo destruído concede 10 pontos. No modo 2P, a pontuação é individual, mas o total é somado para invocar o Boss.
 * **Invocação do Boss:** Ao atingir a pontuação meta (350 pts em 1P ou 700 pts cooperativos em 2P), todos os inimigos menores sumirão e o Boss (Nave Mãe Alienígena) aparecerá.
-* **O Boss:** A Nave Mãe Alienígena tem um comportamento de movimentação vertical, barra de vida centralizada na tela, sons únicos de tiro e o dobro de vida (800 HP) no modo de 2 jogadores. O Boss entra em modo "fúria" (enfurece) ao atingir 37% de vida, mudando a trilha sonora para o clima final.
+* **O Boss:** A Nave Mãe Alienígena tem um comportamento de movimentação vertical, barra de vida centralizada na tela, sons únicos de tiro e o dobro de vida (800 HP) no modo de 2 jogadores. O Boss entra em modo "fúria" ao atingir 37% de vida, mudando a trilha sonora para o clima final.
 
 ---
 
@@ -82,10 +82,10 @@ Esta seção contém os dados dos responsáveis pelo desenvolvimento e orientaç
 | **Desenvolvedor** | Santiago Fidmay | [santiagofidmay@gmail.com](mailto:santiagofidmay@gmail.com) |
 | | | [GitHub](https://github.com/SantiagoFidmay) |
 | | | [Instagram](https://www.instagram.com/santiagofidmay) |
-| **Product Owner** | Carlos Roberto Da Silva Filho | 
+| **Product Owner** | [Nome do Professor] | [Contato do Professor] |
 
 ---
 
 ## Link de Produção
 
-### 🎮 [Clique aqui para jogar o Air Battle!]([INSIRA O LINK AQUI])
+### 🎮 [Clique aqui para jogar o Air Battle!](https://air-battle-2-d.vercel.app/)
