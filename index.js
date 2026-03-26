@@ -19,6 +19,18 @@ window.somTiroAlien = new Audio("audio/som_tiro_alien.mp3");
 
 let faseBossAtual = 0; 
 
+// =======================
+// CARREGAMENTO DOS FUNDOS NOVOS 🌅🌃
+// =======================
+// =======================
+// CARREGAMENTO DOS FUNDOS NOVOS 🌅🌃
+// =======================
+const imgFundo2 = new Image();
+imgFundo2.src = "./img/fundo_2.webp"; // <-- Adicionei o ./img/
+
+const imgFundo3 = new Image();
+imgFundo3.src = "./img/fundo_3.avif"; // <-- Adicionei o ./img/
+
 function pararSons() {
     audioFundo.pause(); audioFundo.currentTime = 0;
     audioBossInicio.pause(); audioBossInicio.currentTime = 0;
@@ -78,7 +90,7 @@ window.onload = () => {
     document.getElementById("btn-reiniciar").onclick = () => iniciarJogo();
     document.getElementById("btn-voltar-menu").onclick = voltarAoMenuPrincipal;
 
-    // Botões de Navegação do Menu (AQUI ESTAVA O SEU PROBLEMA!)
+    // Botões de Navegação do Menu
     document.getElementById("btn-como-jogar").onclick = () => {
         mainPanel.classList.add("hidden");
         howToPanel.classList.remove("hidden");
@@ -342,6 +354,19 @@ function atualiza(){
 function desenha(){
     if(!jogar) return; 
     
+    // ==========================================
+    // LÓGICA DO FUNDO
+    // ==========================================
+    let pontosAtuais = (aviao ? aviao.pontos : 0) + (aviao2 ? aviao2.pontos : 0);
+    let pontosParaBoss = modo2Players ? 700 : 350;
+
+    if (boss) {
+        des.drawImage(imgFundo3, 0, 0, 1600, 900);
+    } else if (pontosAtuais >= pontosParaBoss / 2) {
+        des.drawImage(imgFundo2, 0, 0, 1600, 900);
+    }
+    // ==========================================
+    
     if(aviao && aviao.vida > 0) aviao.des_img();
     if(aviao2 && aviao2.vida > 0) aviao2.des_img();
     
@@ -385,6 +410,8 @@ function desenha(){
 
 function main(){
     if(!jogar) return; 
-    des.clearRect(0,0,1600,900); desenha(); atualiza();
+    des.clearRect(0,0,1600,900); 
+    desenha(); 
+    atualiza();
     loopAnimacao = requestAnimationFrame(main);
 }
