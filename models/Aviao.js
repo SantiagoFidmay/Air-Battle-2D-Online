@@ -72,16 +72,14 @@ class AviaoInimigo extends Obj{
         super(x,y,w,h,img)
         this.vel = 3
     }
-    mov_aviao(){
-        this.x -= this.vel
-    }
+    mov_aviao(){ this.x -= this.vel }
 }
 
 class Boss extends Obj{
-    constructor(x,y,w,h,img){
+    constructor(x,y,w,h,img, vidaTotal = 400){
         super(x,y,w,h,img)
-        this.vidaMaxima = 400 
-        this.vida = 400
+        this.vidaMaxima = vidaTotal 
+        this.vida = vidaTotal
         this.dir = 2
         this.ultimoTiro = 0
     }
@@ -93,28 +91,23 @@ class Boss extends Obj{
         let agora = Date.now()
         if(agora - this.ultimoTiro > 400){
             this.ultimoTiro = agora
-            tirosBoss.push({
-                x: this.x,
-                y: this.y + this.h/2,
-                w: 10,
-                h: 5,
-                vel: 6
-            })
+            tirosBoss.push({ x: this.x, y: this.y + this.h/2, w: 10, h: 5, vel: 6 })
+            
+            if (window.tocando && window.somTiroAlien) {
+                window.somTiroAlien.cloneNode().play();
+            }
         }
     }
 }
 
 class Tiro{
-    constructor(x,y){
-        this.x = x
-        this.y = y
-        this.w = 15
-        this.h = 5
+    constructor(x,y, owner = null){
+        this.x = x; this.y = y; this.w = 15; this.h = 5;
+        this.owner = owner;
     }
     mov(){ this.x += 10 }
     des_quad(){
-        des.fillStyle = "yellow"
-        des.fillRect(this.x, this.y, this.w, this.h)
+        des.fillStyle = "yellow"; des.fillRect(this.x, this.y, this.w, this.h);
     }
     colid(o){
         return (this.x < o.x + o.w && this.x + this.w > o.x && this.y < o.y + o.h && this.y + this.h > o.y)
@@ -143,8 +136,6 @@ class Item extends Obj{
 
 class Text{
     des_text(t,x,y,c,f){
-        des.fillStyle = c
-        des.font = f
-        des.fillText(t,x,y)
+        des.fillStyle = c; des.font = f; des.fillText(t,x,y);
     }
 }

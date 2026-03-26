@@ -2,10 +2,12 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Air Battle - Santiago Fidmay</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <div id="tela-entrada" class="tela-entrada">
         <h1>CLIQUE NA TELA PARA COMEÇAR</h1>
     </div>
@@ -15,11 +17,13 @@
         <div id="menu">
             <video autoplay muted loop id="video-fundo">
                 <source src="./img/gif_Fundo.mp4" type="video/mp4">
+                Seu navegador não suporta vídeos.
             </video>
 
             <div id="main-panel" class="panel">
                 <h1>AIR BATTLE</h1>
-                <button id="btn-jogar" class="btn">JOGAR</button>
+                <button id="btn-jogar" class="btn">1 PLAYER</button>
+                <button id="btn-jogar-2p" class="btn" style="background-color: #0284c7;">2 PLAYERS</button>
                 <button id="btn-como-jogar" class="btn">COMO JOGAR</button>
                 <button id="btn-creditos" class="btn">CRÉDITOS</button>
             </div>
@@ -27,9 +31,9 @@
             <div id="how-to-play-panel" class="panel hidden">
                 <h2>COMO JOGAR</h2>
                 <div class="info-text">
-                    <p><strong>W / S:</strong> Move o avião para cima e para baixo.</p>
-                    <p><strong>Espaço / Clique:</strong> Dispara contra os inimigos.</p>
-                    <p>Fique de olho nos itens! Colete os <strong>power-ups</strong> que caem para ganhar escudos de proteção, mais velocidade ou tiros duplos!</p>
+                    <p><strong>PLAYER 1:</strong> W/S (Mover) - Espaço ou Clique (Atirar)</p>
+                    <p><strong>PLAYER 2:</strong> Setas Cima/Baixo (Mover) - Enter (Atirar)</p>
+                    <p>Fique de olho nos itens! Colete os <strong>power-ups</strong>: escudos, velocidade ou tiros duplos!</p>
                 </div>
                 <button id="btn-voltar-howto" class="btn btn-small">VOLTAR</button>
             </div>
@@ -56,9 +60,11 @@
         </div>
 
         <canvas id="des" width="1600" height="900"></canvas>
+
         <button id="botao-som" class="btn-controle-som">🔊 Som: ON</button>
     </div>
-    <script src="models/Aviao.js"defer></script>
+
+    <script src="models/Aviao.js" defer></script>
     <script src="index.js" defer></script>
 
 </body>
