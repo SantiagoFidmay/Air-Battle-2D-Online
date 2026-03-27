@@ -19,17 +19,12 @@ window.somTiroAlien = new Audio("audio/som_tiro_alien.mp3");
 
 let faseBossAtual = 0; 
 
-// =======================
 // CARREGAMENTO DOS FUNDOS NOVOS 🌅🌃
-// =======================
-// =======================
-// CARREGAMENTO DOS FUNDOS NOVOS 🌅🌃
-// =======================
 const imgFundo2 = new Image();
-imgFundo2.src = "./img/fundo_2.webp"; // <-- Adicionei o ./img/
+imgFundo2.src = "./img/fundo_2.webp"; 
 
 const imgFundo3 = new Image();
-imgFundo3.src = "./img/fundo_3.avif"; // <-- Adicionei o ./img/
+imgFundo3.src = "./img/fundo_3.avif"; 
 
 function pararSons() {
     audioFundo.pause(); audioFundo.currentTime = 0;
@@ -40,12 +35,11 @@ function pararSons() {
     audioDerrota.pause(); audioDerrota.currentTime = 0;
 }
 
-// =======================
 // INTERAÇÃO INICIAL
-// =======================
 telaEntrada.addEventListener('click', () => { somInicio.play(); telaEntrada.style.display = 'none'; });
 
-botaoSom.addEventListener('click', () => {
+botaoSom.addEventListener('click', (e) => {
+    e.stopPropagation(); // Evita que clique no botão de som dispare tiro no celular
     if (window.tocando) {
         somInicio.pause(); audioFundo.muted = true; audioBossInicio.muted = true; audioBossFinal.muted = true;
         audioMayday.muted = true; audioVitoria.muted = true; audioDerrota.muted = true;
@@ -73,14 +67,10 @@ const endTitle = document.getElementById("end-title");
 const endScore = document.getElementById("end-score");
 const canvas = document.getElementById("des");
 
-// Elementos dos Painéis do Menu
 const mainPanel = document.getElementById("main-panel");
 const howToPanel = document.getElementById("how-to-play-panel");
 const creditsPanel = document.getElementById("credits-panel");
 
-// =======================
-// INIT & MENUS
-// =======================
 window.onload = () => {
     des = canvas.getContext("2d");
     
@@ -107,10 +97,30 @@ window.onload = () => {
         creditsPanel.classList.add("hidden");
         mainPanel.classList.remove("hidden");
     };
+
+    // ==========================================
+    // LISTENERS MOBILE (BOTÕES VIRTUAIS)
+    // ==========================================
+    const btnSubir = document.getElementById("btn-subir");
+    const btnDescer = document.getElementById("btn-descer");
+
+    btnSubir.addEventListener("touchstart", (e) => { e.preventDefault(); if(aviao) aviao.dir = -aviao.velAtual; });
+    btnSubir.addEventListener("touchend", (e) => { e.preventDefault(); if(aviao) aviao.dir = 0; });
+    
+    btnDescer.addEventListener("touchstart", (e) => { e.preventDefault(); if(aviao) aviao.dir = aviao.velAtual; });
+    btnDescer.addEventListener("touchend", (e) => { e.preventDefault(); if(aviao) aviao.dir = 0; });
+
+    // Clicar em qualquer lugar da tela atira (Mobile)
+    canvas.addEventListener("touchstart", (e) => { 
+        e.preventDefault(); 
+        if(jogar && aviao && aviao.vida > 0) atirar(aviao); 
+    });
 }
 
 function iniciarModo(is2P) {
     modo2Players = is2P;
+    // Oculta os controles mobile se estiver no modo 2 Players (fica muito ruim 2 pessoas num celular só)
+    if(modo2Players) document.getElementById("controles-mobile").style.display = "none";
     iniciarJogo();
 }
 
@@ -163,7 +173,7 @@ function voltarAoMenuPrincipal() {
 }
 
 // =======================
-// CONTROLES E MECÂNICAS
+// CONTROLES E MECÂNICAS (MANTIDOS PARA O PC)
 // =======================
 function atirar(player){
     let agora = Date.now();
@@ -197,7 +207,12 @@ document.addEventListener("keydown", e => {
     }
 });
 
-document.addEventListener("mousedown", () => { if(jogar && aviao && aviao.vida > 0) atirar(aviao); });
+// Clique do mouse no PC também atira
+document.addEventListener("mousedown", (e) => { 
+    if(jogar && aviao && aviao.vida > 0 && e.target.id !== "btn-subir" && e.target.id !== "btn-descer") {
+        atirar(aviao); 
+    }
+});
 
 document.addEventListener("keyup", e => {
     if(!jogar) return;
@@ -208,21 +223,15 @@ document.addEventListener("keyup", e => {
 function spawnEntidades(){
     if(boss) return;
     
-    // BALANCEAMENTO E FAIXAS (LANES)
-    let limiteInimigos = modo2Players ? 10 : 8; // 2P tem um pouco mais de inimigos totais
-    let chanceInimigo = modo2Players ? 0.02 : 0.03; // Mas nascem um pouco mais devagar em 2P para não lotar de uma vez
+    let limiteInimigos = modo2Players ? 10 : 8; 
+    let chanceInimigo = modo2Players ? 0.02 : 0.03; 
 
     if(inimigos.length < limiteInimigos && Math.random() < chanceInimigo){ 
         
-        // Divide a tela em 5 faixas para evitar engavetamento
         let numeroDeFaixas = 5;
         let tamanhoFaixa = 750 / numeroDeFaixas; 
         let faixaAleatoria = Math.floor(Math.random() * numeroDeFaixas);
-        
-        // Centraliza na faixa sorteada (75 é metade da altura 150)
         let novoY = (faixaAleatoria * tamanhoFaixa) + (tamanhoFaixa / 2) - 75;
-        
-        // Verifica se já não tem alguém muito perto na mesma faixa horizontal
         let sobreposto = inimigos.some(inimigo => Math.abs(inimigo.y - novoY) < 80 && inimigo.x > 1400);
 
         if(!sobreposto) {
@@ -232,7 +241,6 @@ function spawnEntidades(){
         }
     }
     
-    // Aumentando BASTANTE a chance de powerups no modo 2 Players (0.01 vs 0.002)
     let chanceItem = modo2Players ? 0.01 : 0.002;
     if((itens.length === 0 || itens[itens.length-1].x < 1000) && Math.random() < chanceItem){ 
         itens.push(new Item(1600, Math.random() * 830, 70, 70));
@@ -354,9 +362,6 @@ function atualiza(){
 function desenha(){
     if(!jogar) return; 
     
-    // ==========================================
-    // LÓGICA DO FUNDO
-    // ==========================================
     let pontosAtuais = (aviao ? aviao.pontos : 0) + (aviao2 ? aviao2.pontos : 0);
     let pontosParaBoss = modo2Players ? 700 : 350;
 
@@ -365,7 +370,6 @@ function desenha(){
     } else if (pontosAtuais >= pontosParaBoss / 2) {
         des.drawImage(imgFundo2, 0, 0, 1600, 900);
     }
-    // ==========================================
     
     if(aviao && aviao.vida > 0) aviao.des_img();
     if(aviao2 && aviao2.vida > 0) aviao2.des_img();
