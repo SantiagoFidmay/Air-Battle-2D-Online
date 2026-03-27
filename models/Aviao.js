@@ -49,9 +49,10 @@ class Aviao extends Obj{
     }
 
     mov_aviao(){
-        this.y += this.dir
-        if(this.y < 0) this.y = 0
-        if(this.y > 750) this.y = 750 
+        // 👇 Multiplicando a direção pelo fator tempo
+        this.y += this.dir * window.fatorTempo;
+        if(this.y < 0) this.y = 0;
+        if(this.y > 900 - this.h) this.y = 900 - this.h; 
     }
 
     evoluir(){
@@ -72,7 +73,8 @@ class AviaoInimigo extends Obj{
         super(x,y,w,h,img)
         this.vel = 3
     }
-    mov_aviao(){ this.x -= this.vel }
+    // 👇 Multiplicando a velocidade pelo fator tempo
+    mov_aviao(){ this.x -= this.vel * window.fatorTempo; }
 }
 
 class Boss extends Obj{
@@ -84,7 +86,8 @@ class Boss extends Obj{
         this.ultimoTiro = 0
     }
     mov(){
-        this.y += this.dir
+        // 👇 Multiplicando a direção do boss pelo fator tempo
+        this.y += this.dir * window.fatorTempo;
         if(this.y <= 0 || this.y >= 650) this.dir *= -1
     }
     atirar(){
@@ -105,7 +108,9 @@ class Tiro{
         this.x = x; this.y = y; this.w = 15; this.h = 5;
         this.owner = owner;
     }
-    mov(){ this.x += 10 }
+    // 👇 Multiplicando a velocidade do tiro pelo fator tempo
+    mov(){ this.x += 10 * window.fatorTempo; }
+    
     des_quad(){
         des.fillStyle = "yellow"; des.fillRect(this.x, this.y, this.w, this.h);
     }
@@ -130,7 +135,9 @@ class Item extends Obj{
         if(this.tipo === "velocidade") this.img.src = "./img/item_velocidade.png"
         if(this.tipo === "escudo") this.img.src = "./img/item_escudo.png"
     }
-    mov(){ this.x -= this.vel }
+    // 👇 Multiplicando a velocidade do item pelo fator tempo
+    mov(){ this.x -= this.vel * window.fatorTempo; }
+    
     des_img() { des.drawImage(this.img, this.x, this.y, this.w, this.h) }
 }
 

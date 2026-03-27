@@ -243,15 +243,39 @@ h2 {
     transform: scale(0.9);
 }
 
-/* Quando a tela for menor que 900px (Celulares/Tablets) */
 @media (max-width: 900px) {
     #controles-mobile {
-        display: flex; /* Mostra os botões virtuais */
+        display: flex; 
+        bottom: 15vh; /* Levanta os botões para não ficar muito em baixo */
+        left: 20px;
+        gap: 35px; /* Mais espaço entre um botão e outro */
     }
+    
+    .btn-mobile {
+        width: 80px;
+        height: 80px;
+        font-size: 30px;
+    }
+
+    .tela-entrada h1 {
+        font-size: 18px; /* Texto inicial menor */
+        text-align: center;
+        padding: 0 20px;
+        line-height: 1.5;
+    }
+
     .panel {
         min-width: 90%;
         padding: 20px;
     }
+    
     h1 { font-size: 24px; }
     .btn { padding: 15px; font-size: 12px; }
+    
+    .btn-controle-som {
+        top: 10px;
+        right: 10px;
+        font-size: 8px;
+        padding: 8px;
+    }
 }

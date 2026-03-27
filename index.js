@@ -19,7 +19,6 @@ window.somTiroAlien = new Audio("audio/som_tiro_alien.mp3");
 
 let faseBossAtual = 0; 
 
-// CARREGAMENTO DOS FUNDOS NOVOS 🌅🌃
 const imgFundo2 = new Image();
 imgFundo2.src = "./img/fundo_2.webp"; 
 
@@ -39,7 +38,7 @@ function pararSons() {
 telaEntrada.addEventListener('click', () => { somInicio.play(); telaEntrada.style.display = 'none'; });
 
 botaoSom.addEventListener('click', (e) => {
-    e.stopPropagation(); // Evita que clique no botão de som dispare tiro no celular
+    e.stopPropagation(); 
     if (window.tocando) {
         somInicio.pause(); audioFundo.muted = true; audioBossInicio.muted = true; audioBossFinal.muted = true;
         audioMayday.muted = true; audioVitoria.muted = true; audioDerrota.muted = true;
@@ -55,11 +54,15 @@ botaoSom.addEventListener('click', (e) => {
 });
 
 // =======================
-// VARIÁVEIS DO JOGO
+// VARIÁVEIS DO JOGO E DELTA TIME (FPS LIBERADO)
 // =======================
 let des, jogar = false, boss = null, tirosBoss = [], venceu = false;
 let mostrarBossTexto = 0, loopAnimacao, aviao, aviao2, modo2Players = false;
 let inimigos = [], tiros = [], itens = [], t1, t2;
+
+// 👇 VARIÁVEIS PARA O DELTA TIME 👇
+let ultimaVez = 0;
+window.fatorTempo = 1; // 1 = 60fps base
 
 const telaMenu = document.getElementById("menu");
 const endScreen = document.getElementById("end-screen");
@@ -74,13 +77,11 @@ const creditsPanel = document.getElementById("credits-panel");
 window.onload = () => {
     des = canvas.getContext("2d");
     
-    // Botões de Iniciar Jogo
     document.getElementById("btn-jogar").onclick = () => iniciarModo(false);
     document.getElementById("btn-jogar-2p").onclick = () => iniciarModo(true);
     document.getElementById("btn-reiniciar").onclick = () => iniciarJogo();
     document.getElementById("btn-voltar-menu").onclick = voltarAoMenuPrincipal;
 
-    // Botões de Navegação do Menu
     document.getElementById("btn-como-jogar").onclick = () => {
         mainPanel.classList.add("hidden");
         howToPanel.classList.remove("hidden");
@@ -98,9 +99,6 @@ window.onload = () => {
         mainPanel.classList.remove("hidden");
     };
 
-    // ==========================================
-    // LISTENERS MOBILE (BOTÕES VIRTUAIS)
-    // ==========================================
     const btnSubir = document.getElementById("btn-subir");
     const btnDescer = document.getElementById("btn-descer");
 
@@ -110,7 +108,6 @@ window.onload = () => {
     btnDescer.addEventListener("touchstart", (e) => { e.preventDefault(); if(aviao) aviao.dir = aviao.velAtual; });
     btnDescer.addEventListener("touchend", (e) => { e.preventDefault(); if(aviao) aviao.dir = 0; });
 
-    // Clicar em qualquer lugar da tela atira (Mobile)
     canvas.addEventListener("touchstart", (e) => { 
         e.preventDefault(); 
         if(jogar && aviao && aviao.vida > 0) atirar(aviao); 
@@ -119,7 +116,6 @@ window.onload = () => {
 
 function iniciarModo(is2P) {
     modo2Players = is2P;
-    // Oculta os controles mobile se estiver no modo 2 Players (fica muito ruim 2 pessoas num celular só)
     if(modo2Players) document.getElementById("controles-mobile").style.display = "none";
     iniciarJogo();
 }
@@ -132,19 +128,19 @@ function iniciarJogo() {
     
     aviao = new Aviao(100, modo2Players ? 250 : 375, 150, 150, "./img/aviao_1.png");
     
-    if(modo2Players){
-        aviao2 = new Aviao(100, 500, 150, 150, "./img/aviao_1.png");
-    } else {
-        aviao2 = null;
-    }
+    if(modo2Players){ aviao2 = new Aviao(100, 500, 150, 150, "./img/aviao_1.png"); } 
+    else { aviao2 = null; }
 
     t1 = new Text(); t2 = new Text();
     jogar = true; venceu = false; boss = null; mostrarBossTexto = 0; tocouMayday = false;
+    
+    ultimaVez = 0; // Zera para o primeiro cálculo do tempo
+
     pararSons();
     if (window.tocando) audioFundo.play();
     faseBossAtual = 0;
     cancelAnimationFrame(loopAnimacao);
-    main();
+    main(performance.now());
 }
 
 function encerrarJogo(isVitoria) {
@@ -172,9 +168,6 @@ function voltarAoMenuPrincipal() {
     des.clearRect(0,0,1600,900); 
 }
 
-// =======================
-// CONTROLES E MECÂNICAS (MANTIDOS PARA O PC)
-// =======================
 function atirar(player){
     let agora = Date.now();
     if(agora - player.ultimoTiro > player.cooldown){
@@ -193,13 +186,11 @@ function atirar(player){
 
 document.addEventListener("keydown", e => {
     if(!jogar) return;
-    
     if(aviao && aviao.vida > 0){
         if(e.key === "w" || e.key === "W") aviao.dir = -aviao.velAtual;
         if(e.key === "s" || e.key === "S") aviao.dir = aviao.velAtual;
         if(e.key === " ") atirar(aviao);
     }
-    
     if(modo2Players && aviao2 && aviao2.vida > 0){
         if(e.key === "ArrowUp") { aviao2.dir = -aviao2.velAtual; e.preventDefault(); }
         if(e.key === "ArrowDown") { aviao2.dir = aviao2.velAtual; e.preventDefault(); }
@@ -207,7 +198,6 @@ document.addEventListener("keydown", e => {
     }
 });
 
-// Clique do mouse no PC também atira
 document.addEventListener("mousedown", (e) => { 
     if(jogar && aviao && aviao.vida > 0 && e.target.id !== "btn-subir" && e.target.id !== "btn-descer") {
         atirar(aviao); 
@@ -226,7 +216,8 @@ function spawnEntidades(){
     let limiteInimigos = modo2Players ? 10 : 8; 
     let chanceInimigo = modo2Players ? 0.02 : 0.03; 
 
-    if(inimigos.length < limiteInimigos && Math.random() < chanceInimigo){ 
+    // 👇 Usando o fatorTempo para equilibrar as chances de aparecer se o FPS for maior 👇
+    if(inimigos.length < limiteInimigos && Math.random() < chanceInimigo * window.fatorTempo){ 
         
         let numeroDeFaixas = 5;
         let tamanhoFaixa = 750 / numeroDeFaixas; 
@@ -242,7 +233,7 @@ function spawnEntidades(){
     }
     
     let chanceItem = modo2Players ? 0.01 : 0.002;
-    if((itens.length === 0 || itens[itens.length-1].x < 1000) && Math.random() < chanceItem){ 
+    if((itens.length === 0 || itens[itens.length-1].x < 1000) && Math.random() < chanceItem * window.fatorTempo){ 
         itens.push(new Item(1600, Math.random() * 830, 70, 70));
     }
 }
@@ -328,7 +319,9 @@ function atualiza(){
     itens.forEach(item => item.mov());
     
     for(let i = tirosBoss.length - 1; i >= 0; i--){
-        let t = tirosBoss[i]; t.x -= t.vel;
+        let t = tirosBoss[i]; 
+        // 👇 Velocidade ajustada dos tiros do boss
+        t.x -= t.vel * window.fatorTempo; 
         let acertou = false;
         
         if(p1Vivo && aviao.colid({x: t.x, y: t.y, w: t.w, h: t.h})){
@@ -379,6 +372,12 @@ function desenha(){
     tiros.forEach(t => t.des_quad());
     tirosBoss.forEach(t => { des.fillStyle = "red"; des.fillRect(t.x, t.y, t.w, t.h); });
 
+    let isMobile = window.innerWidth <= 900;
+    let fonte = isMobile ? "40px Arial" : "20px Arial";
+    let marginY = isMobile ? 80 : 50; 
+    let espacoY = isMobile ? 50 : 30; 
+    let xPontos = isMobile ? 1100 : 1180; 
+
     if(boss){
         boss.des_img();
         
@@ -390,32 +389,56 @@ function desenha(){
         des.fillStyle = "red"; des.fillRect(barX, barY, Math.max(0, vidaAtualLargura), barHeight); 
         des.strokeStyle = "white"; des.lineWidth = 2; des.strokeRect(barX, barY, barWidth, barHeight);
 
-        des.fillStyle = "white"; des.font = "bold 18px Arial"; des.textAlign = "center"; 
-        des.fillText(`BOSS ALIEN: ${boss.vida} / ${boss.vidaMaxima}`, barX + barWidth / 2, barY + 18);
+        let fontBoss = isMobile ? "bold 30px Arial" : "bold 18px Arial";
+        let textYOffset = isMobile ? 24 : 18;
+        
+        des.fillStyle = "white"; des.font = fontBoss; des.textAlign = "center"; 
+        des.fillText(`BOSS ALIEN: ${boss.vida} / ${boss.vidaMaxima}`, barX + barWidth / 2, barY + textYOffset);
         des.textAlign = "left";
     }
 
     if(aviao && aviao.vida > 0) {
-        t2.des_text("Vida P1: " + aviao.vida, 50, 50, "red", "20px Arial");
-        t1.des_text("Pontos P1: " + aviao.pontos, 1180, 50, "yellow", "20px Arial");
+        t2.des_text("Vida P1: " + aviao.vida, 50, marginY, "red", fonte);
+        t1.des_text("Pontos P1: " + aviao.pontos, xPontos, marginY, "yellow", fonte);
     } else if (modo2Players && aviao && aviao.vida <= 0) {
-        t2.des_text("P1: ABATIDO", 50, 50, "gray", "20px Arial");
+        t2.des_text("P1: ABATIDO", 50, marginY, "gray", fonte);
     }
 
     if(modo2Players){
         if(aviao2 && aviao2.vida > 0) {
-            t2.des_text("Vida P2: " + aviao2.vida, 50, 80, "cyan", "20px Arial");
-            t1.des_text("Pontos P2: " + aviao2.pontos, 1180, 80, "cyan", "20px Arial");
+            t2.des_text("Vida P2: " + aviao2.vida, 50, marginY + espacoY, "cyan", fonte);
+            t1.des_text("Pontos P2: " + aviao2.pontos, xPontos, marginY + espacoY, "cyan", fonte);
         } else if (aviao2 && aviao2.vida <= 0) {
-            t2.des_text("P2: ABATIDO", 50, 80, "gray", "20px Arial");
+            t2.des_text("P2: ABATIDO", 50, marginY + espacoY, "gray", fonte);
         }
     }
 }
 
-function main(){
+// ==========================================
+// FUNÇÃO MAIN COM O DELTA TIME
+// ==========================================
+function main(tempoAtual){
     if(!jogar) return; 
-    des.clearRect(0,0,1600,900); 
-    desenha(); 
-    atualiza();
+    
     loopAnimacao = requestAnimationFrame(main);
+
+    if (!ultimaVez) ultimaVez = tempoAtual;
+
+    // Tempo que passou desde o último quadro em milissegundos
+    let tempoDecorrido = tempoAtual - ultimaVez;
+    ultimaVez = tempoAtual;
+
+    // Trava de segurança: se a pessoa mudar de aba, o tempoDecorrido 
+    // poderia ser gigante e bugar a posição das coisas. Aqui nós limitamos.
+    if (tempoDecorrido > 100) tempoDecorrido = 100;
+
+    // CALCULA O FATOR TEMPO: 
+    // Como 60 FPS = 1 frame a cada ~16.66 milissegundos, essa é a nossa base 1.
+    // Se o PC rodar a 120 FPS, o tempoDecorrido vai ser ~8.33, então o fator vira 0.5!
+    window.fatorTempo = tempoDecorrido / 16.6666;
+
+    des.clearRect(0,0,1600,900); 
+    
+    atualiza();
+    desenha(); 
 }
