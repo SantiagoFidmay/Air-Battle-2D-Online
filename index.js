@@ -1,5 +1,5 @@
 // =======================
-// VARIÁVEIS DE ÁUDIO & INTERFACE 🎵
+// VARIÁVEIS DE ÁUDIO & INTERFACE 
 // =======================
 const telaEntrada = document.getElementById('tela-entrada');
 const somInicio = new Audio('audio/som_inicio.mp3'); 
@@ -15,7 +15,7 @@ let audioMayday = new Audio("audio/mayday.mp3"); let tocouMayday = false;
 let audioVitoria = new Audio("audio/vitoria.mp3");
 let audioDerrota = new Audio("audio/derrota.mp3");
 let somTiro = new Audio("audio/som_tiro.mp3");
-window.somTiroAlien = new Audio("audio/som_tiro_alien.mp3");
+
 
 let faseBossAtual = 0; 
 
@@ -54,13 +54,13 @@ botaoSom.addEventListener('click', (e) => {
 });
 
 // =======================
-// VARIÁVEIS DO JOGO E DELTA TIME (FPS LIBERADO)
+// VARIÁVEIS DO JOGO E DELTA TIME
 // =======================
 let des, jogar = false, boss = null, tirosBoss = [], venceu = false;
 let mostrarBossTexto = 0, loopAnimacao, aviao, aviao2, modo2Players = false;
 let inimigos = [], tiros = [], itens = [], t1, t2;
 
-// 👇 VARIÁVEIS PARA O DELTA TIME 👇
+
 let ultimaVez = 0;
 window.fatorTempo = 1; // 1 = 60fps base
 
@@ -134,7 +134,7 @@ function iniciarJogo() {
     t1 = new Text(); t2 = new Text();
     jogar = true; venceu = false; boss = null; mostrarBossTexto = 0; tocouMayday = false;
     
-    ultimaVez = 0; // Zera para o primeiro cálculo do tempo
+    ultimaVez = 0; 
 
     pararSons();
     if (window.tocando) audioFundo.play();
@@ -216,7 +216,7 @@ function spawnEntidades(){
     let limiteInimigos = modo2Players ? 10 : 8; 
     let chanceInimigo = modo2Players ? 0.02 : 0.03; 
 
-    // 👇 Usando o fatorTempo para equilibrar as chances de aparecer se o FPS for maior 👇
+    //  Usando o fatorTempo para equilibrar as chances de aparecer se o FPS for maior 
     if(inimigos.length < limiteInimigos && Math.random() < chanceInimigo * window.fatorTempo){ 
         
         let numeroDeFaixas = 5;
@@ -320,7 +320,7 @@ function atualiza(){
     
     for(let i = tirosBoss.length - 1; i >= 0; i--){
         let t = tirosBoss[i]; 
-        // 👇 Velocidade ajustada dos tiros do boss
+        
         t.x -= t.vel * window.fatorTempo; 
         let acertou = false;
         
@@ -414,9 +414,7 @@ function desenha(){
     }
 }
 
-// ==========================================
-// FUNÇÃO MAIN COM O DELTA TIME
-// ==========================================
+
 function main(tempoAtual){
     if(!jogar) return; 
     
@@ -424,17 +422,15 @@ function main(tempoAtual){
 
     if (!ultimaVez) ultimaVez = tempoAtual;
 
-    // Tempo que passou desde o último quadro em milissegundos
     let tempoDecorrido = tempoAtual - ultimaVez;
     ultimaVez = tempoAtual;
 
-    // Trava de segurança: se a pessoa mudar de aba, o tempoDecorrido 
-    // poderia ser gigante e bugar a posição das coisas. Aqui nós limitamos.
+
     if (tempoDecorrido > 100) tempoDecorrido = 100;
 
     // CALCULA O FATOR TEMPO: 
-    // Como 60 FPS = 1 frame a cada ~16.66 milissegundos, essa é a nossa base 1.
-    // Se o PC rodar a 120 FPS, o tempoDecorrido vai ser ~8.33, então o fator vira 0.5!
+    // Como 60 FPS = 1 frame a cada ~16.66 milissegundos.
+    // Se o PC rodar a 120 FPS, o tempoDecorrido vai ser ~8.33, então o fator vira 0.5
     window.fatorTempo = tempoDecorrido / 16.6666;
 
     des.clearRect(0,0,1600,900); 
