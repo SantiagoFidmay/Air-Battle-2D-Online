@@ -214,7 +214,7 @@ h2 {
 /* RESPONSIVIDADE E CONTROLES MOBILE         */
 /* ========================================= */
 #controles-mobile {
-    display: none; 
+    display: none; /* Invisível no PC */
     position: absolute;
     bottom: 30px;
     left: 30px;
@@ -246,9 +246,9 @@ h2 {
 @media (max-width: 900px) {
     #controles-mobile {
         display: flex; 
-        bottom: 15vh; 
+        bottom: 15vh; /* Levanta os botões para não ficar muito em baixo */
         left: 20px;
-        gap: 35px; 
+        gap: 35px; /* Mais espaço entre um botão e outro */
     }
     
     .btn-mobile {
@@ -258,7 +258,7 @@ h2 {
     }
 
     .tela-entrada h1 {
-        font-size: 18px; 
+        font-size: 18px; /* Texto inicial menor */
         text-align: center;
         padding: 0 20px;
         line-height: 1.5;

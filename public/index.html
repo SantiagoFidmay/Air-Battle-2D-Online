@@ -8,8 +8,7 @@
     <link rel="icon" type="image/png" href="./img/favicon_jogo.png">
     
     <link rel="stylesheet" href="style.css">
-    <script src="models/Aviao.js" defer></script>
-    <script src="index.js" defer></script>
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
 
@@ -27,8 +26,10 @@
 
             <div id="main-panel" class="panel">
                 <h1>AIR BATTLE</h1>
-                <button id="btn-jogar" class="btn">1 PLAYER</button>
-                <button id="btn-jogar-2p" class="btn" style="background-color: #0284c7;">2 PLAYERS</button>
+     <button id="btn-jogar" class="btn">1 PLAYER</button>
+<button id="btn-jogar-2p" class="btn" style="background-color: #0284c7;">2 PLAYERS</button>
+<button id="btn-jogar-online" class="btn" style="background-color: #0284c7;">2 PLAYERS - ONLINE</button>
+            
                 <button id="btn-como-jogar" class="btn">COMO JOGAR</button>
                 <button id="btn-creditos" class="btn">CRÉDITOS</button>
             </div>
@@ -74,7 +75,8 @@
         <button id="botao-som" class="btn-controle-som">🔊 Som: ON</button>
     </div>
 
-    
+    <script src="models/Aviao.js" defer></script>
+    <script src="index.js" defer></script>
 
 </body>
 </html>
