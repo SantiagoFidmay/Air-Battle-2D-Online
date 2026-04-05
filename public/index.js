@@ -288,8 +288,8 @@ let audioDerrota = new Audio("audio/derrota.mp3");
 let somTiro = new Audio("audio/som_tiro.mp3");
  
 let faseBossAtual = 0;
-const imgFundo2 = new Image(); imgFundo2.src = "./img/fundo_2.webp";
-const imgFundo3 = new Image(); imgFundo3.src = "./img/fundo_3.avif";
+const imgFundo2 = new Image(); imgFundo2.src = "./img/fundo_2.png";
+const imgFundo3 = new Image(); imgFundo3.src = "./img/fundo_3.png";
  
 function pararSons() {
     audioFundo.pause(); audioFundo.currentTime = 0;
