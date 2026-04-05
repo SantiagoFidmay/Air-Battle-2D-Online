@@ -86,6 +86,6 @@ Esta seção contém os dados dos responsáveis pelo desenvolvimento e orientaç
 
 ---
 
-## Link de Produção
+## Link de Produção do jogo
 
 ### 🎮 [Clique aqui para jogar o Air Battle!](https://air-battle-2-d.vercel.app/)
